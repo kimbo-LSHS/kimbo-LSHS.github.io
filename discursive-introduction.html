@@ -113,7 +113,7 @@ button:focus{outline:3px solid var(--focus);outline-offset:2px}
 <section class="panel" id="round1">
 <span class="roundTag">ROUND 1</span>
 <h2>Build the Parent-Monitoring Model</h2>
-<p class="prompt"><strong>Prompt:</strong> Consider if parents should install apps on
+<p class="prompt"><strong>Prompt:</strong> Discuss whether parents should install apps on
 the phones of their children ages 13 and younger to monitor their activities.</p>
 <p class="directions">Select each exact model sentence and place it in the correct
 section.</p>
@@ -167,8 +167,8 @@ type="button">Check Techniques</button></div>
 <span class="roundTag">ROUND 2</span>
 <h2>Build the School-Monitoring Model</h2>
 <p class="unlockNote">Complete Round 1 to unlock.</p>
-<p class="prompt"><strong>Prompt:</strong> How far should public high schools go to
-monitor the lives of their students outside of school for students’ safety?</p>
+<p class="prompt"><strong>Prompt:</strong> Evaluate how far public high schools should go to
+monitor the lives of their students outside of school for students’ safety.</p>
 <p class="directions">Sort the exact guided-model wording into the three parts.</p>
 <div id="bank2" class="bank"></div>
 <div class="buckets">
@@ -218,14 +218,13 @@ type="button">Check Techniques</button></div>
 <!-- ROUND 3 -->
 <section id="round3" class="panel locked">
 <span class="roundTag">ROUND 3</span>
-<h2>Chromebooks</h2>
+<h2>Celebrity Privacy</h2>
 <p class="unlockNote">Complete Round 2 to unlock.</p>
-<p class="prompt"><strong>Prompt:</strong> To what extent should Chromebooks be used
-in Lee County high schools?</p>
+<p class="prompt"><strong>Prompt:</strong> To what extent should celebrities expect privacy
+in their personal lives?</p>
 <div class="passage">
-<strong>Attention Grabber:</strong> Once upon a time, students had to write
-everything out by hand. This was a long and tedious process but, as computer and wifi
-technology emerged, a gradual shift occurred towards the use of Chromebooks.
+<strong>Attention Grabber:</strong> Imagine having millions of strangers discussing
+your relationships, family, and personal decisions simply because you are famous.
 </div>
 <div class="bodyBuilder" id="body3">
 <h3>Build the Background / Context</h3>
@@ -272,15 +271,15 @@ sides</button>
 <fieldset>
 <legend>3. Which thesis best matches the prompt and stays unbiased?</legend>
 <div class="choices one" data-q="r3thesis">
-<button class="choice" type="button" data-value="a">Chromebooks are obviously
-better because technology is the future.</button>
-<button class="choice" type="button" data-value="b">Although some people argue
-Chromebooks should be widely used in Lee County high schools, others believe traditional
-pen-and-paper learning produces better results.</button>
-<button class="choice" type="button" data-value="c">Lee County high schools should
-stop using Chromebooks because students get distracted.</button>
-<button class="choice" type="button" data-value="d">Chromebooks have been used in
-schools for over a decade.</button>
+<button class="choice" type="button" data-value="a">Celebrities should accept that
+privacy disappears when they choose to become famous.</button>
+<button class="choice" type="button" data-value="b">Although some people believe
+celebrities sacrifice a degree of privacy when they choose a public career, others argue
+that fame should not eliminate their right to a private personal life.</button>
+<button class="choice" type="button" data-value="c">The public should stop paying
+attention to celebrities’ personal lives because it is invasive.</button>
+<button class="choice" type="button" data-value="d">Celebrities receive a great deal
+of attention from the public and media.</button>
 </div>
 </fieldset>
 <div class="actions"><button id="check3" class="action primary" type="button">Check
@@ -292,8 +291,8 @@ Round 3</button></div>
 <span class="roundTag">ROUND 4</span>
 <h2>Phone Time</h2>
 <p class="unlockNote">Complete Round 3 to unlock.</p>
-<p class="prompt"><strong>Prompt:</strong> How much time should teenagers spend on
-their phones each day?</p>
+<p class="prompt"><strong>Prompt:</strong> Discuss how much time teenagers should spend on
+their phones each day.</p>
 <div class="passage">
 <strong>Attention Grabber:</strong> Imagine a teenager who starts doom scrolling
 before even going to the bathroom in the morning, and who bed rots on their phone all
@@ -535,7 +534,7 @@ if(!bodyState[3].correct){
 document.getElementById('fb3').innerHTML='<span class="bad">Finish and check the background build first.</span>';
 return;
 }
-checkTriple('r3',['past','explain','b'],'fb3','round4');
+checkTriple('r3',['scenario','context','b'],'fb3','round4');
 });
 document.getElementById('check4').addEventListener('click',()=>{
 if(!bodyState[4].correct){
@@ -559,9 +558,9 @@ fb.innerHTML=`<span class="bad">${pts}/3 correct.</span> Try again.`;
 });
 const bodySets = {
 3:[
-'Chromebooks specifically are used in the classroom because of their long battery life and cheap price tag.',
-'They are lightweight enough to be carried everywhere but durable enough to survive being dropped a few times by accident.',
-'Regardless of how students and teachers feel about them, they have been in classrooms for over a decade now.'
+'Celebrities have always attracted public attention, but social media has made details about their lives more accessible than ever.',
+'Photos, relationships, family matters, and personal controversies can now spread to millions of people within hours.',
+'While public attention is often part of being famous, there is disagreement about where public interest should end and personal privacy should begin.'
 ],
 4:[
 'Cell phones are blamed on everything from lower grades, to apathy, to reduced physical fitness, and beyond.',
@@ -626,7 +625,7 @@ return;
 const correct=s.slots.every((v,i)=>v===i);
 s.correct=correct;
 if(correct){
-fb.innerHTML='<span class="good">Background complete.</span> Notice how the extra sentences explain the issue before the thesis.';
+fb.innerHTML='<span class="good">Background complete.</span> Notice how the extra sentences develop the issue before the thesis.';
 }else{
 fb.innerHTML='<span class="bad">The ideas are there, but the order is off.</span> Rearrange the sentences so the background develops smoothly.';
 }
