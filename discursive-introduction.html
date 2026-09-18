@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Discursive Introduction Challenge</title>
+<style>
+:root{
+--navy:#183A5A; --text:#1f2933; --muted:#667085; --border:#d0d7de;
+--bg:#f7f9fb; --yellow:#fff6a6; --yellow-border:#d6b900;
+--cyan:#d9f6f8; --cyan-border:#4ebcc5; --orange:#ffe0c7; --orange-border:#d58a4b;
+--green:#177245; --red:#a33a2b; --focus:#446f9c; --card:#ffffff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+.wrap{width:min(1120px,calc(100% - 24px));margin:14px auto 30px}
+.hero,.panel{background:#fff;border:1px solid var(--border);border-radius:16px}
+.hero{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;padding:18px 20px;margin-bottom:14px}
+.eyebrow{font-size:12px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.05em}
+h1{font-size:27px;line-height:1.1;margin:5px 0 4px;color:var(--navy)}
+.sub{font-size:13px;color:var(--muted)}
+.scoreBox{text-align:right;min-width:130px}
+.scoreLabel{font-size:12px;color:var(--muted)}
+.score{font-size:28px;font-weight:800;color:var(--navy)}
+.panel{padding:18px 20px;margin-bottom:14px}
+h2{font-size:18px;margin:0 0 6px;color:var(--navy)}
+.prompt,.directions{font-size:14px;line-height:1.45;margin:0 0 12px}
+.prompt{color:var(--muted)}
+.roundTag{display:inline-block;font-size:11px;font-weight:800;color:#fff;background:var(--navy);padding:4px 8px;border-radius:999px;margin-bottom:8px}
+.bank{display:grid;gap:9px;margin-bottom:16px}
+.card,.choice,.placed,.placeBtn,.action{font:inherit}
+.card{
+width:100%;border:1px solid
+var(--border);border-radius:10px;background:#fff;padding:11px 12px;
+text-align:left;cursor:pointer;min-height:48px;line-height:1.35
+}
+.card.selected{outline:3px solid var(--focus);background:#eef4fb}
+.buckets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.bucket{border:2px solid;border-radius:12px;padding:10px;min-height:170px}
+.bucket h3{font-size:15px;margin:0}
+.colorName{font-size:10px;font-weight:800;margin:2px 0 9px}
+.hook{background:var(--yellow);border-color:var(--yellow-border)}
+.background{background:var(--cyan);border-color:var(--cyan-border)}
+.thesis{background:var(--orange);border-color:var(--orange-border)}
+.placeBtn{width:100%;border:1px solid
+rgba(0,0,0,.18);background:rgba(255,255,255,.88);min-height:40px;border-radius:8px;font-weight:700;cursor:pointer}
+.placed{display:block;width:100%;margin-top:8px;border:1px solid
+rgba(0,0,0,.16);background:rgba(255,255,255,.9);border-radius:8px;padding:8px;text-align:left;font-size:12.5px;line-height:1.35;cursor:pointer}
+.passage{background:#f4f6f8;border:1px solid
+var(--border);border-radius:10px;padding:12px;line-height:1.55;font-size:13px;margin-bottom:14px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.action{border:1px solid
+var(--border);border-radius:9px;background:#fff;min-height:40px;padding:8px
+14px;font-weight:700;cursor:pointer}
+.action.primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.feedback{font-size:13px;line-height:1.4;min-height:20px;margin-top:9px}
+.good{color:var(--green);font-weight:700}
+.bad{color:var(--red);font-weight:700}
+.locked{opacity:.55}
+.locked .choice,.locked .action,.locked .card,.locked .placeBtn{pointer-events:none}
+.unlockNote{font-size:11px;color:var(--muted);margin:0 0 10px}
+fieldset{border:0;padding:0;margin:0 0 16px}
+legend{font-size:13px;font-weight:700;margin-bottom:8px}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.choices.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.choices.one{grid-template-columns:1fr}
+.choice{border:1px solid
+var(--border);border-radius:9px;background:#fff;min-height:42px;padding:9px
+10px;text-align:left;cursor:pointer;line-height:1.3}
+.choice.selected{outline:3px solid var(--focus);background:#eef4fb}
+.stepList{display:grid;gap:8px;margin:10px 0 4px}
+.step{padding:10px;border:1px solid
+var(--border);border-radius:9px;background:#fafbfc}
+.finish{padding:12px;border:1px solid
+var(--border);border-radius:10px;background:#f7fbf9}
+.bodyBuilder{margin:14px 0 18px;padding:12px;border:1px solid
+var(--border);border-radius:12px;background:#fbfcfd}
+.bodyBuilder h3{margin:0 0 4px;color:var(--navy);font-size:15px}
+.bodyBuilder .note{font-size:12px;color:var(--muted);margin:0 0 10px}
+.bodyBank{display:grid;gap:8px;margin:10px 0}
+.bodyCard{width:100%;border:1px solid
+var(--border);border-radius:9px;background:#fff;padding:9px
+10px;text-align:left;cursor:pointer;line-height:1.35;font:inherit}
+.bodyCard.selected{outline:3px solid var(--focus);background:#eef4fb}
+.bodySlots{display:grid;gap:8px}
+.bodySlot{display:grid;grid-template-columns:84px 1fr;gap:8px;align-items:start}
+.slotLabel{font-weight:700;font-size:12px;padding-top:10px}
+.slotBox{min-height:52px;border:2px dashed
+#b9c1c8;border-radius:9px;background:#fff;padding:8px;cursor:pointer}
+.slotBox.filled{border-style:solid;background:var(--cyan)}
+.bodyCheck{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+button:focus{outline:3px solid var(--focus);outline-offset:2px}
+@media(max-width:760px){
+.hero{flex-direction:column}.scoreBox{text-align:left}
+.buckets,.choices,.choices.three{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section class="hero">
+<div>
+<div class="eyebrow">AICE General Paper</div>
+<h1>Discursive Introduction Challenge</h1>
+<div class="sub">Each round gets a little harder.</div>
+</div>
+<div class="scoreBox">
+<div class="scoreLabel">Progress</div>
+<div id="score" class="score">0 / 5</div>
+</div>
+</section>
+<!-- ROUND 1 -->
+<section class="panel" id="round1">
+<span class="roundTag">ROUND 1</span>
+<h2>Build the Parent-Monitoring Model</h2>
+<p class="prompt"><strong>Prompt:</strong> Consider if parents should install apps on
+the phones of their children ages 13 and younger to monitor their activities.</p>
+<p class="directions">Select each exact model sentence and place it in the correct
+section.</p>
+<div id="bank1" class="bank"></div>
+<div class="buckets">
+<div class="bucket hook"><h3>Attention Grabber</h3><div
+class="colorName">YELLOW</div><button class="placeBtn" type="button" data-ex="1"
+data-place="hook">Place Here</button><div data-stack="1-hook"></div></div>
+<div class="bucket background"><h3>Background / Context</h3><div
+class="colorName">CYAN</div><button class="placeBtn" type="button" data-ex="1"
+data-place="background">Place Here</button><div data-stack="1-background"></div></div>
+<div class="bucket thesis"><h3>Discursive Thesis</h3><div
+class="colorName">ORANGE</div><button class="placeBtn" type="button" data-ex="1"
+data-place="thesis">Place Here</button><div data-stack="1-thesis"></div></div>
+</div>
+<div class="actions"><button id="check1" class="action primary" type="button">Check
+Round 1</button><button id="reset1" class="action" type="button">Reset</button></div>
+<div id="fb1" class="feedback" aria-live="polite"></div>
+</section>
+<section id="tech1" class="panel locked">
+<h2>Round 1 — Technique Check</h2>
+<p class="unlockNote">Build Round 1 correctly to unlock.</p>
+<fieldset>
+<legend>Which attention-grabber technique is used?</legend>
+<div class="choices" data-q="r1hook">
+<button class="choice" type="button" data-value="quotation">Quotation</button>
+<button class="choice" type="button" data-value="fact">Shocking fact / current
+event</button>
+<button class="choice" type="button" data-value="scenario">Realistic
+scenario</button>
+<button class="choice" type="button" data-value="past">Past-to-present
+progress</button>
+</div>
+</fieldset>
+<fieldset>
+<legend>Which background-information technique is used most clearly?</legend>
+<div class="choices three" data-q="r1bg">
+<button class="choice" type="button" data-value="explain">Explain necessary
+information / technology</button>
+<button class="choice" type="button" data-value="sides">Frame the two
+sides</button>
+<button class="choice" type="button" data-value="context">Provide context</button>
+</div>
+</fieldset>
+<div class="actions"><button id="checkTech1" class="action primary"
+type="button">Check Techniques</button></div>
+<div id="fbTech1" class="feedback" aria-live="polite"></div>
+</section>
+<!-- ROUND 2 -->
+<section id="round2" class="panel locked">
+<span class="roundTag">ROUND 2</span>
+<h2>Build the School-Monitoring Model</h2>
+<p class="unlockNote">Complete Round 1 to unlock.</p>
+<p class="prompt"><strong>Prompt:</strong> How far should public high schools go to
+monitor the lives of their students outside of school for students’ safety?</p>
+<p class="directions">Sort the exact guided-model wording into the three parts.</p>
+<div id="bank2" class="bank"></div>
+<div class="buckets">
+<div class="bucket hook"><h3>Attention Grabber</h3><div
+class="colorName">YELLOW</div><button class="placeBtn" type="button" data-ex="2"
+data-place="hook">Place Here</button><div data-stack="2-hook"></div></div>
+<div class="bucket background"><h3>Background / Context</h3><div
+class="colorName">CYAN</div><button class="placeBtn" type="button" data-ex="2"
+data-place="background">Place Here</button><div data-stack="2-background"></div></div>
+<div class="bucket thesis"><h3>Discursive Thesis</h3><div
+class="colorName">ORANGE</div><button class="placeBtn" type="button" data-ex="2"
+data-place="thesis">Place Here</button><div data-stack="2-thesis"></div></div>
+</div>
+<div class="actions"><button id="check2" class="action primary" type="button">Check
+Round 2</button><button id="reset2" class="action" type="button">Reset</button></div>
+<div id="fb2" class="feedback" aria-live="polite"></div>
+</section>
+<section id="tech2" class="panel locked">
+<h2>Round 2 — Technique Check</h2>
+<p class="unlockNote">Build Round 2 correctly to unlock.</p>
+<fieldset>
+<legend>Which attention-grabber technique is used?</legend>
+<div class="choices" data-q="r2hook">
+<button class="choice" type="button" data-value="quotation">Quotation</button>
+<button class="choice" type="button" data-value="fact">Shocking fact / current
+event</button>
+<button class="choice" type="button" data-value="scenario">Realistic
+scenario</button>
+<button class="choice" type="button" data-value="past">Past-to-present
+progress</button>
+</div>
+</fieldset>
+<fieldset>
+<legend>Which background-information technique is used most clearly?</legend>
+<div class="choices three" data-q="r2bg">
+<button class="choice" type="button" data-value="explain">Explain necessary
+information / technology</button>
+<button class="choice" type="button" data-value="sides">Frame the two
+sides</button>
+<button class="choice" type="button" data-value="context">Provide context</button>
+</div>
+</fieldset>
+<div class="actions"><button id="checkTech2" class="action primary"
+type="button">Check Techniques</button></div>
+<div id="fbTech2" class="feedback" aria-live="polite"></div>
+</section>
+<!-- ROUND 3 -->
+<section id="round3" class="panel locked">
+<span class="roundTag">ROUND 3</span>
+<h2>Chromebooks</h2>
+<p class="unlockNote">Complete Round 2 to unlock.</p>
+<p class="prompt"><strong>Prompt:</strong> To what extent should Chromebooks be used
+in Lee County high schools?</p>
+<div class="passage">
+<strong>Attention Grabber:</strong> Once upon a time, students had to write
+everything out by hand. This was a long and tedious process but, as computer and wifi
+technology emerged, a gradual shift occurred towards the use of Chromebooks.
+</div>
+<div class="bodyBuilder" id="body3">
+<h3>Build the Background / Context</h3>
+<p class="note">A strong introduction does not jump straight from the hook to the
+thesis. Put the three background sentences in the order used in the lesson.</p>
+<div id="bodyBank3" class="bodyBank"></div>
+<div class="bodySlots">
+<div class="bodySlot"><div class="slotLabel">Sentence 1</div><button type="button"
+class="slotBox" data-body-round="3" data-slot="0">Place a sentence here</button></div>
+<div class="bodySlot"><div class="slotLabel">Sentence 2</div><button type="button"
+class="slotBox" data-body-round="3" data-slot="1">Place a sentence here</button></div>
+<div class="bodySlot"><div class="slotLabel">Sentence 3</div><button type="button"
+class="slotBox" data-body-round="3" data-slot="2">Place a sentence here</button></div>
+</div>
+<div class="bodyCheck">
+<button id="checkBody3" class="action primary" type="button">Check
+Background</button>
+<button id="resetBody3" class="action" type="button">Reset Background</button>
+</div>
+<div id="fbBody3" class="feedback" aria-live="polite"></div>
+</div>
+<fieldset>
+<legend>1. Which attention-grabber technique is being used?</legend>
+<div class="choices" data-q="r3hook">
+<button class="choice" type="button" data-value="quotation">Quotation</button>
+<button class="choice" type="button" data-value="scenario">Realistic
+scenario</button>
+<button class="choice" type="button" data-value="past">Past-to-present
+progress</button>
+<button class="choice" type="button" data-value="fact">Shocking fact / current
+event</button>
+</div>
+</fieldset>
+<fieldset>
+<legend>2. Which background-information technique is being used?</legend>
+<div class="choices three" data-q="r3bg">
+<button class="choice" type="button" data-value="explain">Explain necessary
+information / technology</button>
+<button class="choice" type="button" data-value="sides">Frame the two
+sides</button>
+<button class="choice" type="button" data-value="context">Provide context</button>
+</div>
+</fieldset>
+<fieldset>
+<legend>3. Which thesis best matches the prompt and stays unbiased?</legend>
+<div class="choices one" data-q="r3thesis">
+<button class="choice" type="button" data-value="a">Chromebooks are obviously
+better because technology is the future.</button>
+<button class="choice" type="button" data-value="b">Although some people argue
+Chromebooks should be widely used in Lee County high schools, others believe traditional
+pen-and-paper learning produces better results.</button>
+<button class="choice" type="button" data-value="c">Lee County high schools should
+stop using Chromebooks because students get distracted.</button>
+<button class="choice" type="button" data-value="d">Chromebooks have been used in
+schools for over a decade.</button>
+</div>
+</fieldset>
+<div class="actions"><button id="check3" class="action primary" type="button">Check
+Round 3</button></div>
+<div id="fb3" class="feedback" aria-live="polite"></div>
+</section>
+<!-- ROUND 4 -->
+<section id="round4" class="panel locked">
+<span class="roundTag">ROUND 4</span>
+<h2>Phone Time</h2>
+<p class="unlockNote">Complete Round 3 to unlock.</p>
+<p class="prompt"><strong>Prompt:</strong> How much time should teenagers spend on
+their phones each day?</p>
+<div class="passage">
+<strong>Attention Grabber:</strong> Imagine a teenager who starts doom scrolling
+before even going to the bathroom in the morning, and who bed rots on their phone all
+weekend.
+</div>
+<div class="bodyBuilder" id="body4">
+<h3>Build the Background / Context</h3>
+<p class="note">This time, build the longer background yourself. Put the three
+lesson sentences in the order that makes the introduction flow.</p>
+<div id="bodyBank4" class="bodyBank"></div>
+<div class="bodySlots">
+<div class="bodySlot"><div class="slotLabel">Sentence 1</div><button type="button"
+class="slotBox" data-body-round="4" data-slot="0">Place a sentence here</button></div>
+<div class="bodySlot"><div class="slotLabel">Sentence 2</div><button type="button"
+class="slotBox" data-body-round="4" data-slot="1">Place a sentence here</button></div>
+<div class="bodySlot"><div class="slotLabel">Sentence 3</div><button type="button"
+class="slotBox" data-body-round="4" data-slot="2">Place a sentence here</button></div>
+</div>
+<div class="bodyCheck">
+<button id="checkBody4" class="action primary" type="button">Check
+Background</button>
+<button id="resetBody4" class="action" type="button">Reset Background</button>
+</div>
+<div id="fbBody4" class="feedback" aria-live="polite"></div>
+</div>
+<fieldset>
+<legend>1. Which attention-grabber technique is being used?</legend>
+<div class="choices" data-q="r4hook">
+<button class="choice" type="button" data-value="quotation">Quotation</button>
+<button class="choice" type="button" data-value="scenario">Realistic
+scenario</button>
+<button class="choice" type="button" data-value="past">Past-to-present
+progress</button>
+<button class="choice" type="button" data-value="fact">Shocking fact / current
+event</button>
+</div>
+</fieldset>
+<fieldset>
+<legend>2. Which background-information technique is being used?</legend>
+<div class="choices three" data-q="r4bg">
+<button class="choice" type="button" data-value="explain">Explain necessary
+information / technology</button>
+<button class="choice" type="button" data-value="sides">Frame the two
+sides</button>
+<button class="choice" type="button" data-value="context">Provide context</button>
+</div>
+</fieldset>
+<fieldset>
+<legend>3. Which thesis best matches the prompt and stays unbiased?</legend>
+<div class="choices one" data-q="r4thesis">
+<button class="choice" type="button" data-value="a">Teenagers should clearly spend
+less time on their phones because phones are harmful.</button>
+<button class="choice" type="button" data-value="b">Although some people think
+teenagers should limit the time they spend on their phones each day, others believe phones
+should be accepted as a modern benefit.</button>
+<button class="choice" type="button" data-value="c">Phones are everywhere now, so
+teenagers will use them no matter what.</button>
+<button class="choice" type="button" data-value="d">Parents should take phones
+away at night.</button>
+</div>
+</fieldset>
+<div class="actions"><button id="check4" class="action primary" type="button">Check
+Round 4</button></div>
+<div id="fb4" class="feedback" aria-live="polite"></div>
+</section>
+<!-- ROUND 5 -->
+<section id="round5" class="panel locked">
+<span class="roundTag">ROUND 5</span>
+<h2>Teen Work</h2>
+<p class="unlockNote">Complete Round 4 to unlock.</p>
+<p class="prompt"><strong>Prompt:</strong> Assess the extent to which teenagers should
+work while they attend high school.</p>
+<div class="passage">
+The great football coach Vince Lombardi once said, “The only place where success
+comes before work is in the dictionary.” Colleges are highly competitive now, demanding
+high GPAs for entry. At the same time, college is also more expensive than ever. High
+school students have been working for years, but the issue is more complicated than ever
+when such factors are weighed.
+</div>
+<fieldset>
+<legend>1. Which attention-grabber technique is being used?</legend>
+<div class="choices" data-q="r5hook">
+<button class="choice" type="button" data-value="quotation">Quotation</button>
+<button class="choice" type="button" data-value="scenario">Realistic
+scenario</button>
+<button class="choice" type="button" data-value="past">Past-to-present
+progress</button>
+<button class="choice" type="button" data-value="fact">Shocking fact / current
+event</button>
+</div>
+</fieldset>
+<fieldset>
+<legend>2. Which background-information technique is being used?</legend>
+<div class="choices three" data-q="r5bg">
+<button class="choice" type="button" data-value="explain">Explain necessary
+information / technology</button>
+<button class="choice" type="button" data-value="sides">Frame the two
+sides</button>
+<button class="choice" type="button" data-value="context">Provide context</button>
+</div>
+</fieldset>
+<fieldset>
+<legend>3. Which thesis best matches the prompt and stays unbiased?</legend>
+<div class="choices one" data-q="r5thesis">
+<button class="choice" type="button" data-value="a">Teenagers should work because
+having a job teaches responsibility.</button>
+<button class="choice" type="button" data-value="b">Although some people think
+teenagers should work while they attend high school, others believe focusing on academics
+and extracurriculars is more important.</button>
+<button class="choice" type="button" data-value="c">Working in high school is
+usually a bad idea because students are already busy.</button>
+<button class="choice" type="button" data-value="d">College is expensive, so
+teenagers need jobs.</button>
+</div>
+</fieldset>
+<div class="actions"><button id="check5" class="action primary" type="button">Check
+Round 5</button></div>
+<div id="fb5" class="feedback" aria-live="polite"></div>
+</section>
+<section id="finish" class="panel locked">
+<h2>Finished — Back to the Worksheet</h2>
+<p class="unlockNote">Complete all five rounds to unlock.</p>
+<div class="finish">
+<strong>Now build ONE introduction on your own on the worksheet.</strong>
+<div class="stepList">
+<div class="step">1. Choose an attention-grabber technique that fits the
+prompt.</div>
+<div class="step">2. Add useful background/context.</div>
+<div class="step">3. Write an unbiased discursive thesis that matches the exact
+prompt.</div>
+</div>
+</div>
+</section>
+</main>
+<script>
+const sets = {
+1:[
+{id:'a1',text:'Imagine you are a parent and look over your child’s shoulder and see a text from someone you do not know. Do you investigate or let the child keep secrets?',answer:'hook'},
+{id:'a2',text:'Many parents worry about safety in a world where children can communicate instantly and privately. Technology gives families more information, but it can also create conflict over trust and independence.',answer:'background'},
+{id:'a3',text:'Although some people believe parents should monitor their children’s phones for safety, others argue this damages trust and privacy.',answer:'thesis'}
+],
+2:[
+{id:'b1',text:'An alarming number of high school students have experienced online harassment or safety concerns outside school hours.',answer:'hook'},
+{id:'b2',text:'Schools are expected to protect students, but student behavior increasingly moves beyond the classroom and into social media, group chats, and public spaces. The issue is whether a school’s responsibility for safety should extend beyond campus.',answer:'background'},
+{id:'b3',text:'Although some people believe public high schools should monitor students outside of school to protect their safety, others believe this crosses a line and violates student privacy.',answer:'thesis'}
+]
+};
+const state={
+1:{selected:null,placements:{}},
+2:{selected:null,placements:{}},
+q:{}
+};
+function render(ex){
+const s=state[ex], bank=document.getElementById('bank'+ex);
+bank.innerHTML='';
+sets[ex].filter(c=>!s.placements[c.id]).forEach(c=>{
+const b=document.createElement('button'); b.type='button'; b.className='card';
+b.textContent=c.text;
+if(s.selected===c.id)b.classList.add('selected');
+b.addEventListener('click',()=>{s.selected=s.selected===c.id?null:c.id;render(ex)});
+bank.appendChild(b);
+});
+['hook','background','thesis'].forEach(bucket=>{
+const stack=document.querySelector(`[data-stack="${ex}-${bucket}"]`);
+stack.innerHTML='';
+sets[ex].filter(c=>s.placements[c.id]===bucket).forEach(c=>{
+const b=document.createElement('button'); b.type='button'; b.className='placed';
+b.textContent=c.text;
+b.addEventListener('click',()=>{delete s.placements[c.id];render(ex)});
+stack.appendChild(b);
+});
+});
+}
+document.querySelectorAll('.placeBtn').forEach(btn=>btn.addEventListener('click',()=>{
+const ex=btn.dataset.ex, s=state[ex], fb=document.getElementById('fb'+ex);
+if(!s.selected){fb.innerHTML='<span class="bad">Select a sentence card first.</span>';return}
+s.placements[s.selected]=btn.dataset.place; s.selected=null; fb.textContent='';
+render(ex);
+}));
+function checkBuild(ex,unlockId){
+const s=state[ex], cards=sets[ex], fb=document.getElementById('fb'+ex);
+if(Object.keys(s.placements).length<cards.length){fb.innerHTML='<span class="bad">Place all three cards before checking.</span>';return}
+let correct=0; cards.forEach(c=>{if(s.placements[c.id]===c.answer)correct++});
+if(correct===3){
+fb.innerHTML='<span class="good">3/3 — perfect build.</span>';
+document.getElementById(unlockId).classList.remove('locked');
+}else{
+fb.innerHTML=`<span class="bad">${correct}/3 correct.</span> Move a card and try again.`;
+}
+}
+document.getElementById('check1').addEventListener('click',()=>checkBuild('1','tech1'));
+document.getElementById('check2').addEventListener('click',()=>checkBuild('2','tech2'));
+document.getElementById('reset1').addEventListener('click',()=>{state[1]={selected:null,placements:{}};document.getElementById('fb1').textContent='';render('1')});
+document.getElementById('reset2').addEventListener('click',()=>{state[2]={selected:null,placements:{}};document.getElementById('fb2').textContent='';render('2')});
+document.querySelectorAll('[data-q]').forEach(group=>{
+group.querySelectorAll('.choice').forEach(btn=>{
+btn.addEventListener('click',()=>{
+group.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));
+btn.classList.add('selected');
+state.q[group.dataset.q]=btn.dataset.value;
+});
+});
+});
+function checkPair(keys,answers,fbId,unlockId,msg){
+const fb=document.getElementById(fbId);
+if(keys.some(k=>!state.q[k])){fb.innerHTML='<span class="bad">Answer both questions first.</span>';return}
+let pts=0; keys.forEach((k,i)=>{if(state.q[k]===answers[i])pts++});
+if(pts===keys.length){
+fb.innerHTML='<span class="good">'+keys.length+'/'+keys.length+' — correct.</span> '+msg;
+document.getElementById(unlockId).classList.remove('locked');
+} else {
+fb.innerHTML=`<span class="bad">${pts}/${keys.length} correct.</span> Try again.`;
+}
+}
+document.getElementById('checkTech1').addEventListener('click',()=>checkPair(
+['r1hook','r1bg'],['scenario','sides'],'fbTech1','round2',
+'Realistic scenario + frame the two sides.'
+));
+document.getElementById('checkTech2').addEventListener('click',()=>checkPair(
+['r2hook','r2bg'],['fact','context'],'fbTech2','round3',
+'Shocking fact/current event + provide context.'
+));
+function checkTriple(prefix,answers,fbId,unlockId){
+const keys=[prefix+'hook',prefix+'bg',prefix+'thesis'];
+const fb=document.getElementById(fbId);
+if(keys.some(k=>!state.q[k])){fb.innerHTML='<span class="bad">Answer all three questions first.</span>';return}
+let pts=0; keys.forEach((k,i)=>{if(state.q[k]===answers[i])pts++});
+if(pts===3){
+fb.innerHTML='<span class="good">3/3 — correct.</span>';
+document.getElementById(unlockId).classList.remove('locked');
+const n=parseInt(prefix.replace('r',''),10);
+document.getElementById('score').textContent=n+' / 5';
+} else {
+fb.innerHTML=`<span class="bad">${pts}/3 correct.</span> Try again.`;
+}
+}
+document.getElementById('check3').addEventListener('click',()=>{
+if(!bodyState[3].correct){
+document.getElementById('fb3').innerHTML='<span class="bad">Finish and check the background build first.</span>';
+return;
+}
+checkTriple('r3',['past','explain','b'],'fb3','round4');
+});
+document.getElementById('check4').addEventListener('click',()=>{
+if(!bodyState[4].correct){
+document.getElementById('fb4').innerHTML='<span class="bad">Finish and check the background build first.</span>';
+return;
+}
+checkTriple('r4',['scenario','sides','b'],'fb4','round5');
+});
+document.getElementById('check5').addEventListener('click',()=>{
+const keys=['r5hook','r5bg','r5thesis']; const fb=document.getElementById('fb5');
+if(keys.some(k=>!state.q[k])){fb.innerHTML='<span class="bad">Answer all three questions first.</span>';return}
+let pts=0;
+['quotation','context','b'].forEach((ans,i)=>{if(state.q[keys[i]]===ans)pts++});
+if(pts===3){
+fb.innerHTML='<span class="good">3/3 — challenge complete.</span>';
+document.getElementById('finish').classList.remove('locked');
+document.getElementById('score').textContent='5 / 5';
+} else {
+fb.innerHTML=`<span class="bad">${pts}/3 correct.</span> Try again.`;
+}
+});
+const bodySets = {
+3:[
+'Chromebooks specifically are used in the classroom because of their long battery life and cheap price tag.',
+'They are lightweight enough to be carried everywhere but durable enough to survive being dropped a few times by accident.',
+'Regardless of how students and teachers feel about them, they have been in classrooms for over a decade now.'
+],
+4:[
+'Cell phones are blamed on everything from lower grades, to apathy, to reduced physical fitness, and beyond.',
+"Parents feel cell phones are an unwelcome presence in their teens' lives.",
+'It is also noteworthy, however, that these same parents want their kids to have phones with them at all times in case of an emergency.'
+]
+};
+const bodyState = {
+3:{selected:null,slots:[null,null,null],correct:false},
+4:{selected:null,slots:[null,null,null],correct:false}
+};
+function renderBody(round){
+const bank=document.getElementById('bodyBank'+round);
+if(!bank) return;
+const s=bodyState[round];
+bank.innerHTML='';
+bodySets[round].forEach((text,idx)=>{
+if(s.slots.includes(idx)) return;
+const b=document.createElement('button');
+b.type='button';
+b.className='bodyCard';
+b.textContent=text;
+if(s.selected===idx)b.classList.add('selected');
+b.addEventListener('click',()=>{
+s.selected=s.selected===idx?null:idx;
+renderBody(round);
+});
+bank.appendChild(b);
+});
+document.querySelectorAll(`[data-body-round="${round}"]`).forEach(slot=>{
+const slotIndex=parseInt(slot.dataset.slot,10);
+const cardIndex=s.slots[slotIndex];
+slot.classList.toggle('filled',cardIndex!==null);
+slot.textContent=cardIndex===null?'Place a sentence here':bodySets[round][cardIndex];
+});
+}
+document.querySelectorAll('[data-body-round]').forEach(slot=>{
+slot.addEventListener('click',()=>{
+const round=parseInt(slot.dataset.bodyRound,10);
+const slotIndex=parseInt(slot.dataset.slot,10);
+const s=bodyState[round];
+if(s.selected!==null){
+if(s.slots[slotIndex]!==null){
+s.slots[slotIndex]=null;
+}
+s.slots[slotIndex]=s.selected;
+s.selected=null;
+} else if(s.slots[slotIndex]!==null){
+s.slots[slotIndex]=null;
+}
+s.correct=false;
+renderBody(round);
+});
+});
+function checkBody(round){
+const s=bodyState[round];
+const fb=document.getElementById('fbBody'+round);
+if(s.slots.some(v=>v===null)){
+fb.innerHTML='<span class="bad">Place all three background sentences first.</span>';
+return;
+}
+const correct=s.slots.every((v,i)=>v===i);
+s.correct=correct;
+if(correct){
+fb.innerHTML='<span class="good">Background complete.</span> Notice how the extra sentences explain the issue before the thesis.';
+}else{
+fb.innerHTML='<span class="bad">The ideas are there, but the order is off.</span> Rearrange the sentences so the background develops smoothly.';
+}
+}
+[3,4].forEach(round=>{
+document.getElementById('checkBody'+round).addEventListener('click',()=>checkBody(round));
+document.getElementById('resetBody'+round).addEventListener('click',()=>{
+bodyState[round]={selected:null,slots:[null,null,null],correct:false};
+document.getElementById('fbBody'+round).textContent='';
+renderBody(round);
+});
+});
+render('1'); render('2'); renderBody(3); renderBody(4);
+</script>
+</body>
+</html>
