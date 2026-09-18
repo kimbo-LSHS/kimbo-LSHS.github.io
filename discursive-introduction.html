@@ -112,11 +112,10 @@ button:focus{outline:3px solid var(--focus);outline-offset:2px}
 <!-- ROUND 1 -->
 <section class="panel" id="round1">
 <span class="roundTag">ROUND 1</span>
-<h2>Build the Parent-Monitoring Model</h2>
+<h2>Parent Monitoring</h2>
 <p class="prompt"><strong>Prompt:</strong> Discuss whether parents should install apps on
 the phones of their children ages 13 and younger to monitor their activities.</p>
-<p class="directions">Select each exact model sentence and place it in the correct
-section.</p>
+<p class="directions">Place each sentence in the correct part of the introduction.</p>
 <div id="bank1" class="bank"></div>
 <div class="buckets">
 <div class="bucket hook"><h3>Attention Grabber</h3><div
@@ -165,11 +164,11 @@ type="button">Check Techniques</button></div>
 <!-- ROUND 2 -->
 <section id="round2" class="panel locked">
 <span class="roundTag">ROUND 2</span>
-<h2>Build the School-Monitoring Model</h2>
+<h2>School Monitoring</h2>
 <p class="unlockNote">Complete Round 1 to unlock.</p>
 <p class="prompt"><strong>Prompt:</strong> Evaluate how far public high schools should go to
 monitor the lives of their students outside of school for students’ safety.</p>
-<p class="directions">Sort the exact guided-model wording into the three parts.</p>
+<p class="directions">Place each sentence in the correct part of the introduction.</p>
 <div id="bank2" class="bank"></div>
 <div class="buckets">
 <div class="bucket hook"><h3>Attention Grabber</h3><div
@@ -228,8 +227,7 @@ your relationships, family, and personal decisions simply because you are famous
 </div>
 <div class="bodyBuilder" id="body3">
 <h3>Build the Background / Context</h3>
-<p class="note">A strong introduction does not jump straight from the hook to the
-thesis. Put the three background sentences in the order used in the lesson.</p>
+<p class="note">Put the three background sentences in the order that makes the introduction flow logically.</p>
 <div id="bodyBank3" class="bodyBank"></div>
 <div class="bodySlots">
 <div class="bodySlot"><div class="slotLabel">Sentence 1</div><button type="button"
@@ -293,15 +291,10 @@ Round 3</button></div>
 <p class="unlockNote">Complete Round 3 to unlock.</p>
 <p class="prompt"><strong>Prompt:</strong> Discuss how much time teenagers should spend on
 their phones each day.</p>
-<div class="passage">
-<strong>Attention Grabber:</strong> Imagine a teenager who starts doom scrolling
-before even going to the bathroom in the morning, and who bed rots on their phone all
-weekend.
-</div>
+
 <div class="bodyBuilder" id="body4">
 <h3>Build the Background / Context</h3>
-<p class="note">This time, build the longer background yourself. Put the three
-lesson sentences in the order that makes the introduction flow.</p>
+<p class="note">Put the three background sentences in the order that makes the introduction flow logically.</p>
 <div id="bodyBank4" class="bodyBank"></div>
 <div class="bodySlots">
 <div class="bodySlot"><div class="slotLabel">Sentence 1</div><button type="button"
@@ -318,20 +311,9 @@ Background</button>
 </div>
 <div id="fbBody4" class="feedback" aria-live="polite"></div>
 </div>
+
 <fieldset>
-<legend>1. Which attention-grabber technique is being used?</legend>
-<div class="choices" data-q="r4hook">
-<button class="choice" type="button" data-value="quotation">Quotation</button>
-<button class="choice" type="button" data-value="scenario">Realistic
-scenario</button>
-<button class="choice" type="button" data-value="past">Past-to-present
-progress</button>
-<button class="choice" type="button" data-value="fact">Shocking fact / current
-event</button>
-</div>
-</fieldset>
-<fieldset>
-<legend>2. Which background-information technique is being used?</legend>
+<legend>1. Which background-information technique is being used?</legend>
 <div class="choices three" data-q="r4bg">
 <button class="choice" type="button" data-value="explain">Explain necessary
 information / technology</button>
@@ -341,7 +323,7 @@ sides</button>
 </div>
 </fieldset>
 <fieldset>
-<legend>3. Which thesis best matches the prompt and stays unbiased?</legend>
+<legend>2. Which thesis best matches the prompt and stays unbiased?</legend>
 <div class="choices one" data-q="r4thesis">
 <button class="choice" type="button" data-value="a">Teenagers should clearly spend
 less time on their phones because phones are harmful.</button>
@@ -365,6 +347,7 @@ Round 4</button></div>
 <p class="unlockNote">Complete Round 4 to unlock.</p>
 <p class="prompt"><strong>Prompt:</strong> Assess the extent to which teenagers should
 work while they attend high school.</p>
+<p class="directions">Final challenge: Analyze the model introduction, identify the techniques, and choose the thesis that best completes it.</p>
 <div class="passage">
 The great football coach Vince Lombardi once said, “The only place where success
 comes before work is in the dictionary.” Colleges are highly competitive now, demanding
@@ -441,14 +424,14 @@ const sets = {
 ]
 };
 const state={
-1:{selected:null,placements:{}},
-2:{selected:null,placements:{}},
+1:{selected:null,placements:{},order:[2,0,1]},
+2:{selected:null,placements:{},order:[1,2,0]},
 q:{}
 };
 function render(ex){
 const s=state[ex], bank=document.getElementById('bank'+ex);
 bank.innerHTML='';
-sets[ex].filter(c=>!s.placements[c.id]).forEach(c=>{
+s.order.map(i=>sets[ex][i]).filter(c=>!s.placements[c.id]).forEach(c=>{
 const b=document.createElement('button'); b.type='button'; b.className='card';
 b.textContent=c.text;
 if(s.selected===c.id)b.classList.add('selected');
@@ -485,8 +468,8 @@ fb.innerHTML=`<span class="bad">${correct}/3 correct.</span> Move a card and try
 }
 document.getElementById('check1').addEventListener('click',()=>checkBuild('1','tech1'));
 document.getElementById('check2').addEventListener('click',()=>checkBuild('2','tech2'));
-document.getElementById('reset1').addEventListener('click',()=>{state[1]={selected:null,placements:{}};document.getElementById('fb1').textContent='';render('1')});
-document.getElementById('reset2').addEventListener('click',()=>{state[2]={selected:null,placements:{}};document.getElementById('fb2').textContent='';render('2')});
+document.getElementById('reset1').addEventListener('click',()=>{state[1]={selected:null,placements:{},order:[2,0,1]};document.getElementById('fb1').textContent='';render('1')});
+document.getElementById('reset2').addEventListener('click',()=>{state[2]={selected:null,placements:{},order:[1,2,0]};document.getElementById('fb2').textContent='';render('2')});
 document.querySelectorAll('[data-q]').forEach(group=>{
 group.querySelectorAll('.choice').forEach(btn=>{
 btn.addEventListener('click',()=>{
@@ -541,7 +524,10 @@ if(!bodyState[4].correct){
 document.getElementById('fb4').innerHTML='<span class="bad">Finish and check the background build first.</span>';
 return;
 }
-checkTriple('r4',['scenario','sides','b'],'fb4','round5');
+checkPair(['r4bg','r4thesis'],['sides','b'],'fb4','round5','');
+if(state.q['r4bg']==='sides' && state.q['r4thesis']==='b'){
+document.getElementById('score').textContent='4 / 5';
+}
 });
 document.getElementById('check5').addEventListener('click',()=>{
 const keys=['r5hook','r5bg','r5thesis']; const fb=document.getElementById('fb5');
@@ -569,15 +555,16 @@ const bodySets = {
 ]
 };
 const bodyState = {
-3:{selected:null,slots:[null,null,null],correct:false},
-4:{selected:null,slots:[null,null,null],correct:false}
+3:{selected:null,slots:[null,null,null],correct:false,order:[2,0,1]},
+4:{selected:null,slots:[null,null,null],correct:false,order:[1,2,0]}
 };
 function renderBody(round){
 const bank=document.getElementById('bodyBank'+round);
 if(!bank) return;
 const s=bodyState[round];
 bank.innerHTML='';
-bodySets[round].forEach((text,idx)=>{
+s.order.forEach(idx=>{
+const text=bodySets[round][idx];
 if(s.slots.includes(idx)) return;
 const b=document.createElement('button');
 b.type='button';
@@ -633,7 +620,7 @@ fb.innerHTML='<span class="bad">The ideas are there, but the order is off.</span
 [3,4].forEach(round=>{
 document.getElementById('checkBody'+round).addEventListener('click',()=>checkBody(round));
 document.getElementById('resetBody'+round).addEventListener('click',()=>{
-bodyState[round]={selected:null,slots:[null,null,null],correct:false};
+bodyState[round]={selected:null,slots:[null,null,null],correct:false,order:round===3?[2,0,1]:[1,2,0]};
 document.getElementById('fbBody'+round).textContent='';
 renderBody(round);
 });
